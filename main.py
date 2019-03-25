@@ -73,6 +73,19 @@ class Xuetangx(object):
         if course:
             print('Playing:', course.group(1))
 
+        re_play_time = re.compile(
+            '<div class="xt_video_player_current_time_display fl"><span>(.*?)</span> / <span>(.*?)</span></div>')
+
+        while True:
+            play_time = re_play_time.search(self.driver.page_source)
+            if play_time and play_time.group(2) != '0:00':
+                break
+            else:
+                print("Can't load the video. Try to reload.")
+                self.driver.refresh()
+                self.driver.implicitly_wait(5)
+                time.sleep(2)
+
         while True:
             try:
                 self.driver.execute_script(
@@ -84,15 +97,10 @@ class Xuetangx(object):
                 time.sleep(2)
 
         while True:
-            play_time = re.search(
-                '<div class="xt_video_player_current_time_display fl"><span>(.*?)</span> / <span>(.*?)</span></div>', self.driver.page_source)
+            play_time = re_play_time.search(self.driver.page_source)
             if play_time:
                 print('Current:', play_time.group(1) + '/' + play_time.group(2))
-            if play_time and play_time.group(2) == "0:00":
-                self.driver.refresh()
-                self.driver.implicitly_wait(5)
-                time.sleep(2)
-            elif play_time and play_time.group(1) == play_time.group(2):
+            if play_time and play_time.group(1) == play_time.group(2):
                 time.sleep(1)
                 self.history = url
                 return
