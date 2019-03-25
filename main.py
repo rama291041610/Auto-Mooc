@@ -19,6 +19,7 @@ class Xuetangx(object):
 
         self.login()
 
+        '''读取历史记录'''
         if os.path.exists('record.data'):
             self.history = open('record.data', 'r').read().strip()
         else:
@@ -46,7 +47,7 @@ class Xuetangx(object):
         if self.driver.find_element_by_link_text('登录'):
             self.driver.find_element_by_link_text('登录').click()
         while True:
-            time.sleep(8)
+            time.sleep(5)
             if 'https://hit.xuetangx.com/manager#/studentcourselist' == self.driver.current_url:
                 return
 
@@ -76,6 +77,7 @@ class Xuetangx(object):
         re_play_time = re.compile(
             '<div class="xt_video_player_current_time_display fl"><span>(.*?)</span> / <span>(.*?)</span></div>')
 
+        '''处理视频未成功加载的情况'''
         while True:
             play_time = re_play_time.search(self.driver.page_source)
             if play_time and play_time.group(2) != '0:00':
@@ -88,8 +90,15 @@ class Xuetangx(object):
 
         while True:
             try:
+                '''禁用失焦自动暂停'''
                 self.driver.execute_script(
-                    "javascript:var video=document.getElementById('video');video.pause=null;video.play();document.getElementsByClassName('xt_video_player_speed xt_video_player_common fr')[0].children[1].children[0].click()")
+                    "javascript:var video=document.getElementById('video');video.pause=null;video.play();")
+                '''playbackRare=2.00'''
+                self.driver.execute_script(
+                    "javascript:document.getElementsByClassName('xt_video_player_speed xt_video_player_common fr')[0].children[1].children[0].click()")
+                '''切换至标清'''
+                self.driver.execute_script(
+                    "javascript:document.getElementsByClassName('xt_video_player_quality xt_video_player_common fr')[0].children[1].children[1].click()")
                 break
             except:
                 self.driver.refresh()
