@@ -88,7 +88,11 @@ class Xuetangx(object):
                 '<div class="xt_video_player_current_time_display fl"><span>(.*?)</span> / <span>(.*?)</span></div>', self.driver.page_source)
             if play_time:
                 print('Current:', play_time.group(1) + '/' + play_time.group(2))
-            if play_time and play_time.group(1) == play_time.group(2):
+            if play_time and play_time.group(2) == "0:00":
+                self.driver.refresh()
+                self.driver.implicitly_wait(5)
+                time.sleep(2)
+            elif play_time and play_time.group(1) == play_time.group(2):
                 time.sleep(1)
                 self.history = url
                 return
