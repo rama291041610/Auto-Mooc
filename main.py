@@ -84,7 +84,7 @@ class Xuetangx(object):
                 print("Can't load the video. Try to reload.")
                 self.driver.refresh()
                 self.driver.implicitly_wait(5)
-                time.sleep(2)
+                time.sleep(10)
 
         while True:
             try:
