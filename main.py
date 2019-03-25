@@ -89,7 +89,7 @@ class Xuetangx(object):
         while True:
             try:
                 self.driver.execute_script(
-                    "javascript:var video=document.getElementById('video');video.pause=null;video.play();")
+                    "javascript:var video=document.getElementById('video');video.pause=null;video.play();document.getElementsByClassName('xt_video_player_speed xt_video_player_common fr')[0].children[1].children[0].click()")
                 break
             except:
                 self.driver.refresh()
