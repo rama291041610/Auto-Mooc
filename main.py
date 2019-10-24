@@ -14,7 +14,7 @@ class Xuetangx(object):
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--mute-audio")
 
-        self.driver = webdriver.Chrome(chrome_options=chrome_options)
+        self.driver = webdriver.Chrome(options=chrome_options)
         self.driver.maximize_window()
 
         self.login()
@@ -61,7 +61,7 @@ class Xuetangx(object):
             return False
 
     def get_all_video(self):
-        return re.findall('href="(.*?videoDiscussion)" class="element-title"', self.driver.page_source)
+        return re.findall('href="(/lms#/video/.*?)" class="element-title"', self.driver.page_source)
 
     def get_all_text(self):
         return re.findall('href="(/lms#/graphic/.*?)" class="element-title"', self.driver.page_source)
